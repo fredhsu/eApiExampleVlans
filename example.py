@@ -23,11 +23,17 @@ for switch in switches:
     response = switchReq.runCmds( 1, ["show vlan"] )
     print "Switch : " + switch + " VLANs: "
     print response[0]["vlans"].keys()
+    print 
+  
+print "\n*** Done adding vlan to switches ***\n"
 
-
+# Go through them again to remove the vlan
+for switch in switches:
+    urlString = "https://{}:{}@{}/command-api".format(username, password, switch)
+    switchReq = Server( urlString )
     # Remove vlan 100
-    print "Removing vlan 100"
-    response = switchReq.runCmds( 1, ["enable", "configure", "no vlan 100"] )
-    print
-    print
+    print switch + " : removing vlan 100"
+    response = switchReq.runCmds( 1, ["enable", "configure", "no vlan 100", "end"] )
+    print response
     
+print "\n*** Script done ***"
